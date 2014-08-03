@@ -1,0 +1,1241 @@
+
+R version 3.1.0 (2014-04-10) -- "Spring Dance"
+Copyright (C) 2014 The R Foundation for Statistical Computing
+Platform: i386-w64-mingw32/i386 (32-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> names(loansData)
+Error: object 'loansData' not found
+> names(loanData)
+Error: object 'loanData' not found
+> getwd()
+[1] "C:/Users/sarthak10193/Documents"
+> setwd("./data analytics/fico")
+> loansData <- read.csv("loansData.csv")
+> dim(loansDaata)
+Error: object 'loansDaata' not found
+> dim(loansData)
+[1] 2500   14
+> names(loansData)
+ [1] "Amount.Requested"               "Amount.Funded.By.Investors"    
+ [3] "Interest.Rate"                  "Loan.Length"                   
+ [5] "Loan.Purpose"                   "Debt.To.Income.Ratio"          
+ [7] "State"                          "Home.Ownership"                
+ [9] "Monthly.Income"                 "FICO.Range"                    
+[11] "Open.CREDIT.Lines"              "Revolving.CREDIT.Balance"      
+[13] "Inquiries.in.the.Last.6.Months" "Employment.Length"             
+> sapply(names(loansData[1,]),class)
+              Amount.Requested     Amount.Funded.By.Investors 
+                   "character"                    "character" 
+                 Interest.Rate                    Loan.Length 
+                   "character"                    "character" 
+                  Loan.Purpose           Debt.To.Income.Ratio 
+                   "character"                    "character" 
+                         State                 Home.Ownership 
+                   "character"                    "character" 
+                Monthly.Income                     FICO.Range 
+                   "character"                    "character" 
+             Open.CREDIT.Lines       Revolving.CREDIT.Balance 
+                   "character"                    "character" 
+Inquiries.in.the.Last.6.Months              Employment.Length 
+                   "character"                    "character" 
+> sapply(loansData[1,],class)
+              Amount.Requested     Amount.Funded.By.Investors 
+                     "integer"                      "numeric" 
+                 Interest.Rate                    Loan.Length 
+                      "factor"                       "factor" 
+                  Loan.Purpose           Debt.To.Income.Ratio 
+                      "factor"                       "factor" 
+                         State                 Home.Ownership 
+                      "factor"                       "factor" 
+                Monthly.Income                     FICO.Range 
+                     "numeric"                       "factor" 
+             Open.CREDIT.Lines       Revolving.CREDIT.Balance 
+                     "integer"                      "integer" 
+Inquiries.in.the.Last.6.Months              Employment.Length 
+                     "integer"                       "factor" 
+> head(loansData)
+      Amount.Requested Amount.Funded.By.Investors Interest.Rate Loan.Length
+81174            20000                      20000         8.90%   36 months
+99592            19200                      19200        12.12%   36 months
+80059            35000                      35000        21.98%   60 months
+15825            10000                       9975         9.99%   36 months
+33182            12000                      12000        11.71%   36 months
+62403             6000                       6000        15.31%   36 months
+            Loan.Purpose Debt.To.Income.Ratio State Home.Ownership
+81174 debt_consolidation               14.90%    SC       MORTGAGE
+99592 debt_consolidation               28.36%    TX       MORTGAGE
+80059 debt_consolidation               23.81%    CA       MORTGAGE
+15825 debt_consolidation               14.30%    KS       MORTGAGE
+33182        credit_card               18.78%    NJ           RENT
+62403              other               20.05%    CT            OWN
+      Monthly.Income FICO.Range Open.CREDIT.Lines Revolving.CREDIT.Balance
+81174        6541.67    735-739                14                    14272
+99592        4583.33    715-719                12                    11140
+80059       11500.00    690-694                14                    21977
+15825        3833.33    695-699                10                     9346
+33182        3195.00    695-699                11                    14469
+62403        4891.67    670-674                17                    10391
+      Inquiries.in.the.Last.6.Months Employment.Length
+81174                              2          < 1 year
+99592                              1           2 years
+80059                              1           2 years
+15825                              0           5 years
+33182                              0           9 years
+62403                              2           3 years
+> summary(loansData)
+ Amount.Requested Amount.Funded.By.Investors Interest.Rate     Loan.Length               Loan.Purpose  Debt.To.Income.Ratio     State       Home.Ownership
+ Min.   : 1000    Min.   :   -0.01           12.12% : 122   36 months:1952   debt_consolidation:1307   0%     :   8         CA     : 433   MORTGAGE:1148  
+ 1st Qu.: 6000    1st Qu.: 6000.00           7.90%  : 119   60 months: 548   credit_card       : 444   12.54% :   6         NY     : 255   NONE    :   1  
+ Median :10000    Median :10000.00           13.11% : 115                    other             : 201   12.20% :   5         TX     : 174   OTHER   :   5  
+ Mean   :12406    Mean   :12001.57           15.31% :  76                    home_improvement  : 152   12.85% :   5         FL     : 169   OWN     : 200  
+ 3rd Qu.:17000    3rd Qu.:16000.00           14.09% :  72                    major_purchase    : 101   14.22% :   5         IL     : 101   RENT    :1146  
+ Max.   :35000    Max.   :35000.00           14.33% :  69                    small_business    :  87   14.66% :   5         GA     :  98                  
+                                             (Other):1927                    (Other)           : 208   (Other):2466         (Other):1270                  
+ Monthly.Income       FICO.Range   Open.CREDIT.Lines Revolving.CREDIT.Balance Inquiries.in.the.Last.6.Months Employment.Length
+ Min.   :   588.5   670-674: 171   Min.   : 2.00     Min.   :     0           Min.   :0.0000                 10+ years:653    
+ 1st Qu.:  3500.0   675-679: 166   1st Qu.: 7.00     1st Qu.:  5586           1st Qu.:0.0000                 < 1 year :250    
+ Median :  5000.0   680-684: 157   Median : 9.00     Median : 10962           Median :0.0000                 2 years  :244    
+ Mean   :  5688.9   695-699: 153   Mean   :10.08     Mean   : 15245           Mean   :0.9063                 3 years  :235    
+ 3rd Qu.:  6800.0   665-669: 145   3rd Qu.:13.00     3rd Qu.: 18889           3rd Qu.:1.0000                 5 years  :202    
+ Max.   :102750.0   690-694: 140   Max.   :38.00     Max.   :270800           Max.   :9.0000                 4 years  :192    
+ NA's   :1          (Other):1568   NA's   :2         NA's   :2                NA's   :2                      (Other)  :724    
+> sum(is.na(loansData))
+[1] 7
+> sum(is.na(loansData[,1]))
+[1] 0
+> sum(is.na(loansData[,2]))
+[1] 0
+> sum(is.na(loansData[,5]))
+[1] 0
+> sum(is.na(loansData[,10]))
+[1] 0
+> sum(is.na(loansData[,11]))
+[1] 2
+> loansData[!complete.cases(loansData),]
+       Amount.Requested Amount.Funded.By.Investors Interest.Rate Loan.Length
+101596             5000                       4525         7.43%   36 months
+101515             3500                        225        10.28%   36 months
+       Loan.Purpose Debt.To.Income.Ratio State Home.Ownership Monthly.Income
+101596        other                   1%    NY           NONE             NA
+101515        other                  10%    NY           RENT          15000
+       FICO.Range Open.CREDIT.Lines Revolving.CREDIT.Balance
+101596    800-804                NA                       NA
+101515    685-689                NA                       NA
+       Inquiries.in.the.Last.6.Months Employment.Length
+101596                             NA          < 1 year
+101515                             NA          < 1 year
+> loansData[!complete.cases(loansData)]
+Error in `[.data.frame`(loansData, !complete.cases(loansData)) : 
+  undefined columns selected
+> loansData[!complete.cases(loansData),]
+       Amount.Requested Amount.Funded.By.Investors Interest.Rate Loan.Length Loan.Purpose Debt.To.Income.Ratio State Home.Ownership Monthly.Income FICO.Range
+101596             5000                       4525         7.43%   36 months        other                   1%    NY           NONE             NA    800-804
+101515             3500                        225        10.28%   36 months        other                  10%    NY           RENT          15000    685-689
+       Open.CREDIT.Lines Revolving.CREDIT.Balance Inquiries.in.the.Last.6.Months Employment.Length
+101596                NA                       NA                             NA          < 1 year
+101515                NA                       NA                             NA          < 1 year
+> tempData <- loansData[complete.cases(loansData),]
+> sum(is.na(loansData))
+[1] 7
+> sum(is.na(tempData))
+[1] 0
+
+> quantile(newloansData$Interest.Rate)
+Error in quantile.default(newloansData$Interest.Rate) : 
+  factors are not allowed
+
+## lets see how we transform it to numeric 
+> as.character.factor(loansData$Interest.Rate[1:4])
+[1] "8.90%"  "12.12%" "21.98%" "9.99%" 
+> sapply(as.character.factor(loansData$Interest.Rate[1:4]),class)
+      8.90%      12.12%      21.98%       9.99% 
+"character" "character" "character" "character" 
+
+> ### hence now we have it in character form and suitable for application of strsplit()
+> newloansData$Interest.Rate <- as.numeric(strsplit(as.character.factor(newloansData$Interest.Rate),"%"))
+> head(newloansData[1:3],3)
+      Amount.Requested Amount.Funded.By.Investors Interest.Rate
+81174            20000                      20000          8.90
+99592            19200                      19200         12.12
+80059            35000                      35000         21.98
+> quantile(newloansData$Interest.Rate)
+   0%   25%   50%   75%  100% 
+ ###  transforming Debt.To.Income.Ratio to numeric from factor
+> newloansData$Debt.To.Income.Ratio <- as.numeric(strsplit(as.character.factor(newloansData$Debt.To.Income.Ratio),"%"))
+  
+
+### checking the conversion 
+> sapply(newloansData[1,],class)
+              Amount.Requested     Amount.Funded.By.Investors                  Interest.Rate                    Loan.Length                   Loan.Purpose 
+                     "integer"                      "numeric"                      "numeric"                       "factor"                       "factor" 
+          Debt.To.Income.Ratio                          State                 Home.Ownership                 Monthly.Income                     FICO.Range 
+                     "numeric"                       "factor"                       "factor"                      "numeric"                       "factor" 
+             Open.CREDIT.Lines       Revolving.CREDIT.Balance Inquiries.in.the.Last.6.Months              Employment.Length 
+                     "integer"                      "integer"                      "integer"                       "factor" 
+
+
+### Creating a new column FICO.Score and adding the middle value of the Fico.Range 
+### converting factor FICO.Range to character,taking the substring, converting to numeric and adding 2 to take the middle value
+> newloansData$FICO.Score <- as.numeric(substring(as.character.factor(newloansData$FICO.Range),1,3))+2
+> newloansData$FICO.Score[1:3]
+[1] 737 717 692
+> dim(newloansData)
+[1] 2498   15
+> head(newloansData)
+      Amount.Requested Amount.Funded.By.Investors Interest.Rate Loan.Length       Loan.Purpose Debt.To.Income.Ratio State Home.Ownership Monthly.Income FICO.Range
+81174            20000                      20000          8.90   36 months debt_consolidation                14.90    SC       MORTGAGE        6541.67    735-739
+99592            19200                      19200         12.12   36 months debt_consolidation                28.36    TX       MORTGAGE        4583.33    715-719
+80059            35000                      35000         21.98   60 months debt_consolidation                23.81    CA       MORTGAGE       11500.00    690-694
+15825            10000                       9975          9.99   36 months debt_consolidation                14.30    KS       MORTGAGE        3833.33    695-699
+33182            12000                      12000         11.71   36 months        credit_card                18.78    NJ           RENT        3195.00    695-699
+62403             6000                       6000         15.31   36 months              other                20.05    CT            OWN        4891.67    670-674
+      Open.CREDIT.Lines Revolving.CREDIT.Balance Inquiries.in.the.Last.6.Months Employment.Length FICO.Score
+81174                14                    14272                              2          < 1 year        737
+99592                12                    11140                              1           2 years        717
+80059                14                    21977                              1           2 years        692
+15825                10                     9346                              0           5 years        697
+33182                11                    14469                              0           9 years        697
+62403                17                    10391                              2           3 years        672
+> quantile(newloansData$FICO.Score)
+  0%  25%  50%  75% 100% 
+ 642  682  702  727  832 
+> boxplot(newloansData.Interest.Rate)
+Error in boxplot(newloansData.Interest.Rate) : 
+  object 'newloansData.Interest.Rate' not found
+> boxplot(newloansData$Interest.Rate)
+> boxplot(newloansData$Interest.Rate, col = "blue")
+> quantile(newloansData$Interest.Rate)
+   0%   25%   50%   75%  100% 
+ 5.42 10.16 13.11 15.80 24.89 
+> levelsnewloansData$Interest.Rate)
+Error: unexpected ')' in "levelsnewloansData$Interest.Rate)"
+> levels(newloansData$Interest.Rate)
+NULL
+> boxplot(newloansData$Interest.Rate, col = "blue",main = "boxplot for InterestRate")
+> hist(newloansData$Interest.Rate,breaks = 100, col = "blue",main = "boxplot for InterestRate")
+> hist(newloansData$Interest.Rate,breaks = 10, col = "blue",main = "boxplot for InterestRate")
+> hist(newloansData$Interest.Rate,breaks = 200, col = "blue",main = "boxplot for InterestRate")
+> hist(newloansData$Interest.Rate,breaks = 100, col = "blue",main = "boxplot for InterestRate")
+> hist(newloansData$Interest.Rate,breaks = 100, col = "blue",main = "hist for InterestRate")
+> help qqnorm
+Error: unexpected symbol in "help qqnorm"
+> help qqnorm()
+Error: unexpected symbol in "help qqnorm"
+> qqnorm?
++ 
+
++ > ##set the plot display to 1*3
+> par(mfrow = c(1,3))
+> boxplot(newloansData$Interest.Rate ~ newloansData$Loan.Length , col = "blue" , varwidth= T)
+> boxplot(newloansData$Interest.Rate ~ newloansData.Loan.Purpose , col = "red" , varwidth= T)
+Error in eval(expr, envir, enclos) : 
+  object 'newloansData.Loan.Purpose' not found
+> boxplot(newloansData$Interest.Rate ~ newloansData$Loan.Purpose , col = "red" , varwidth= T)
+> boxplot(newloansData$Interest.Rate ~ newloansData$Home.Ownership , col = "green" , varwidth= T)
+> boxplot(newloansData$Interest.Rate ~ newloansData$Home.Ownership , col = "green" , varwidth= T, main = "var isOwnership")
+> boxplot(newloansData$Interest.Rate ~ newloansData$Loan.Purpose , col = "red" ,main = "var is Purpose", varwidth= T)
+> boxplot(newloansData$Interest.Rate ~ newloansData$Loan.Length , col = "blue" ,main = "var is loan length", varwidth= T)
+> levels(newloansData$Loan.Length)
+[1] "36 months" "60 months"
+> summary(newloansData$Loan.Length))
+Error: unexpected ')' in "summary(newloansData$Loan.Length))"
+> summary(newloansData$Loan.Length)
+36 months 60 months 
+     1950       548 
+> summary(newloansData$Home.Ownership)
+MORTGAGE     NONE    OTHER      OWN     RENT 
+    1148        0        5      200     1145 
+> names(newloansData)
+ [1] "Amount.Requested"               "Amount.Funded.By.Investors"     "Interest.Rate"                  "Loan.Length"                   
+ [5] "Loan.Purpose"                   "Debt.To.Income.Ratio"           "State"                          "Home.Ownership"                
+ [9] "Monthly.Income"                 "FICO.Range"                     "Open.CREDIT.Lines"              "Revolving.CREDIT.Balance"      
+[13] "Inquiries.in.the.Last.6.Months" "Employment.Length"              "FICO.Score"                    
+> boxplot(newloansData$Interest.Rate ~ newloansData$Loan.Inquiries.in.the.Last.6.Months , col = "blue" ,main = "var is inquiries", varwidth= T)
+Error in model.frame.default(formula = newloansData$Interest.Rate ~ newloansData$Loan.Inquiries.in.the.Last.6.Months) : 
+  invalid type (NULL) for variable 'newloansData$Loan.Inquiries.in.the.Last.6.Months'
+> boxplot(newloansData$Interest.Rate ~ newloansData$Inquiries.in.the.Last.6.Months , col = "blue" ,main = "var is inquiries", varwidth= T)
+> par(mfrow = c(1,3))
+> boxplot(newloansData$Interest.Rate ~ newloansData$Inquiries.in.the.Last.6.Months , col = "blue" ,main = "var is inquiries", varwidth= T)
+> boxplot(newloansData$Interest.Rate ~ newloansData$Inquiries.in.the.Last.6.Months , col = "blue" ,main = "var is inquiries", varwidth= T, xlab = "no of inquiries")
+> par(mfrow = c(1,3))
+> boxplot(newloansData$Interest.Rate ~ newloansData$Inquiries.in.the.Last.6.Months , col = "blue" ,main = "var is inquiries", varwidth= T, xlab = "no of inquiries")
+> summary(newloansData)
+ Amount.Requested Amount.Funded.By.Investors Interest.Rate      Loan.Length               Loan.Purpose  Debt.To.Income.Ratio     State       Home.Ownership
+ Min.   : 1000    Min.   :   -0.01           Min.   : 5.42   36 months:1950   debt_consolidation:1307   Min.   : 0.00        CA     : 433   MORTGAGE:1148  
+ 1st Qu.: 6000    1st Qu.: 6000.00           1st Qu.:10.16   60 months: 548   credit_card       : 444   1st Qu.: 9.75        NY     : 253   NONE    :   0  
+ Median :10000    Median :10000.00           Median :13.11                    other             : 199   Median :15.32        TX     : 174   OTHER   :   5  
+ Mean   :12413    Mean   :12009.28           Mean   :13.07                    home_improvement  : 152   Mean   :15.39        FL     : 169   OWN     : 200  
+ 3rd Qu.:17000    3rd Qu.:16000.00           3rd Qu.:15.80                    major_purchase    : 101   3rd Qu.:20.68        IL     : 101   RENT    :1145  
+ Max.   :35000    Max.   :35000.00           Max.   :24.89                    small_business    :  87   Max.   :34.91        GA     :  98                  
+                                                                              (Other)           : 208                        (Other):1270                  
+ Monthly.Income       FICO.Range   Open.CREDIT.Lines Revolving.CREDIT.Balance Inquiries.in.the.Last.6.Months Employment.Length   FICO.Score   
+ Min.   :   588.5   670-674: 171   Min.   : 2.00     Min.   :     0           Min.   :0.0000                 10+ years:653     Min.   :642.0  
+ 1st Qu.:  3500.0   675-679: 166   1st Qu.: 7.00     1st Qu.:  5586           1st Qu.:0.0000                 < 1 year :248     1st Qu.:682.0  
+ Median :  5000.0   680-684: 157   Median : 9.00     Median : 10962           Median :0.0000                 2 years  :244     Median :702.0  
+ Mean   :  5685.2   695-699: 153   Mean   :10.08     Mean   : 15245           Mean   :0.9063                 3 years  :235     Mean   :707.9  
+ 3rd Qu.:  6800.0   665-669: 145   3rd Qu.:13.00     3rd Qu.: 18889           3rd Qu.:1.0000                 5 years  :202     3rd Qu.:727.0  
+ Max.   :102750.0   690-694: 140   Max.   :38.00     Max.   :270800           Max.   :9.0000                 4 years  :192     Max.   :832.0  
+                    (Other):1566                                                                             (Other)  :724                    
+> levels(newloansData$Employment.Length)
+ [1] "< 1 year"  "1 year"    "10+ years" "2 years"   "3 years"   "4 years"   "5 years"   "6 years"   "7 years"   "8 years"   "9 years"   "n/a"      
+> boxplot(newloansData$Interest.Rate ~ newloansData$Employment.Length , col = "orange" ,main = "var is employeement lenghth", varwidth= T, xlab = "emp length")
+> levels(newloansData$State)
+ [1] "AK" "AL" "AR" "AZ" "CA" "CO" "CT" "DC" "DE" "FL" "GA" "HI" "IA" "IL" "IN" "KS" "KY" "LA" "MA" "MD" "MI" "MN" "MO" "MS" "MT" "NC" "NH" "NJ" "NM" "NV" "NY" "OH"
+[33] "OK" "OR" "PA" "RI" "SC" "SD" "TX" "UT" "VA" "VT" "WA" "WI" "WV" "WY"
+> levels(newloansData$Open.CREDIT.Lines)
+NULL
+> levels(newloansData$Open.CREDIT.Lines)
+NULL
+> newloansData$Open.CREDIT.Lines[10]
+[1] 8
+> unique(newloansData$Open.CREDIT.Lines)
+ [1] 14 12 10 11 17  9  8 19 13  6 18  7  5  4 23  2  3 22 15 21 16 20 26 31 38 25 24 34 36
+> par(mfrow = c(1,2))
+> boxplot(newloansData$Interest.Rate ~ newloansData$Employment.Length , col = "orange" ,main = "var is employeement lenghth", varwidth= T, xlab = "emp length")
+> boxplot(newloansData$Interest.Rate ~ newloansData$Inquiries.in.the.Last.6.Months , col = "blue" ,main = "var is inquiries", varwidth= T, xlab = "no of inquiries")
+> unique(newloansData$Monthly.Income)
+  [1]   6541.67   4583.33  11500.00   3833.33   3195.00   4891.67   2916.67  13863.42   3150.00   5000.00   3575.00   4250.00  14166.67   9166.67  11250.00   5416.67
+ [17]   9000.00   4333.33   2733.33   3750.00   6666.67   6250.00   4100.00   6833.33   4500.00   2964.17   4167.00   3958.33   5833.33  10583.33  10416.67   5250.00
+ [33]   3666.67   5583.33   5666.67   3448.33   2500.00   4416.67  12000.00   3700.00   5166.67   5577.00   3083.33   4600.00   7952.00   9250.00   4166.67   3000.00
+ [49]   7500.00   1100.00   2625.00   2708.33   8000.00   3250.00   5500.00   3650.00   2666.67   2427.00   5883.33   6399.00   6000.00   3041.67   4800.00   3333.33
+ [65]   2000.00  10000.00  12500.00   4666.67   4000.00   7083.33   3500.00  14583.33   8233.33  18333.33   9583.33   4234.00  12916.67   5132.00   4916.67   2900.00
+ [81]   9333.33   4683.33   7916.67   4190.00   3150.25   2833.33   8400.00   7666.67   3916.67   3892.75   5031.67   2083.33   2166.67   5258.50   2748.00   2750.00
+ [97]   8333.33   8416.67   6100.00   5733.58  11666.67   5708.33   4186.00   7583.33  15416.67   4750.00   4541.67   4625.00   6583.33   2254.00  25000.00   6083.33
+[113]   1333.33   6750.00   1750.00   1500.00   2530.00   3941.58   1779.17   8833.33   5750.00  10167.00   4200.00   8237.50   2400.00   2880.00   5083.33   5291.67
+[129]   7695.08   8083.33   8315.67  65000.00   4341.67   4025.67   4480.00   2917.00   6625.00   3416.67   5002.33   3100.00   1800.00   7125.00   3333.00  16083.33
+[145]   2738.67  12083.33   3166.67   3726.67   1916.67   7750.00   3583.33   7965.00   3033.33   4350.00   8583.00   6400.00   2944.00   6091.83   3113.83   7466.83
+[161]   2298.75   6125.00   2080.00  12833.33   3275.00   6800.00  15583.33   3168.00   3678.08   6041.67   5734.08   5208.33   3584.62    884.90   3010.00   7400.00
+[177]   3583.00   4364.58   2302.00   6416.67   3200.00   8750.00   2940.25   1000.00   2519.17   9666.67   6612.00   2870.42   1833.33   5458.33   6312.00   1403.33
+[193]   7233.33   2333.33   2512.00  11208.33  16416.67   3541.67   4833.33  20833.33   5113.00   5924.50   3417.00   3820.27   6333.33   7250.00   7501.00   4700.00
+[209]   7667.00   2870.33   2290.00   1958.33   2555.16   3162.25   4841.67   3807.64   2583.33  10268.25   4791.67   7166.67   2629.00   6733.33   7702.00   6500.00
+[225]  10625.00   2791.67   5050.00   1658.00   8666.67   1667.00   1471.00   3125.00   1083.33   2108.33   9220.00   2250.00   4833.00   8910.42   3264.00  10417.00
+[241]   3937.08   7000.00   7055.00   9083.33   5319.17  16666.67   1560.00   9160.00   8161.33   9208.00   6354.00   4497.00   5445.00   1600.00   7800.00   5427.42
+[257]  13333.33   7758.33   5988.67   4810.08   6166.67   7333.33   8583.33   7968.75   1666.67   3355.05   4104.67   1541.67   9519.75   4170.00  10833.33   1558.42
+[273]   2766.67   2700.00   3108.33  22916.67   4116.67   2416.67   3958.00   3400.00   3730.00   4458.33   1125.00   7083.00   6620.00   7833.33   3616.00   4766.67
+[289]   4407.00   2752.92   9833.33   5686.67   4900.00   6048.00   7301.58  13416.67   2300.00   8533.33  13750.00   4850.00    866.67   6928.13   3083.00   3791.67
+[305]   1558.33   3006.44   2817.50  13100.00  13166.67  10250.00  18750.00   1200.00  13666.67   6916.67   5100.00   5417.00   8500.00   5316.67   2860.00   1930.75
+[321]   4583.00   8917.00   2541.67   6700.00   1700.00   2946.67   3800.00   7266.67    666.67   3600.00   2600.00  19583.00   4738.67   6294.25   5300.00  20000.00
+[337]   5129.00  10333.33   8054.50   6833.00   4958.33  15000.00   3208.33   5916.67   3746.58   3458.00   4300.00   5292.00  13125.00   3466.67   5683.00   4285.50
+[353]   5850.00   4083.33   2495.83   8606.56   8791.67   3145.83   5333.33  14000.00   5746.00   3350.00   5077.58   6333.00   8300.00   5925.00   2430.00   2100.00
+[369]   3816.67   3108.00   7247.00   3640.00   7110.42   6300.00   5651.33   3912.00   8125.00   2375.00   3625.00  11000.00   4944.92   5200.00  10400.00   2609.00
+[385]   3352.00   6308.75   7258.33   4166.25   5150.00   3644.83   4789.33   3376.00  13999.17   5791.67   4548.83   4853.33   5520.00   1416.67   7416.67   7331.25
+[401]   4400.00   7300.00   7917.00   5025.00   7238.92  10500.00   6875.00   5562.92   3167.00   3300.00  11166.67   3358.33  13933.33   2800.00   2253.00   5636.75
+[417]  21666.67  11667.00   5222.00   2462.75   5623.33   5133.33  10916.00   7583.00   5761.00   9866.00  27083.33   1820.00   6476.00  10533.33   3320.83   3833.00
+[433]   4229.17   4448.00   5580.00   3084.00   3521.00   4375.00   7458.33   4708.33   2508.33   3617.21  13583.33   3941.00   6307.42   2176.67   5624.00   6667.00
+[449]   9417.00  11833.33   8744.26   6691.67   3540.00   4980.00   4158.00  10192.00   9051.83   3291.67   2824.00   7415.83   7983.33   6517.00   5147.17   6737.50
+[465]   3476.80   1482.92   4208.33   4183.33   4133.33  18483.00  11583.33   6650.00  10813.17    588.50   5130.42   7167.92   3206.67   5555.08  10700.00  17500.00
+[481]  12208.33   2183.33   5382.00   7388.42   6290.00   7236.67   7291.67   4325.00   4721.00   9125.00   2641.67   2740.50   2458.33   4008.33   9288.33   6996.17
+[497]   2883.33   4154.17 102750.00  12750.00   2773.33  10166.67   3664.25   8937.50   5800.00   3119.92   5075.00   4248.33   3778.67   2208.33   4425.17  19166.67
+[513]   3090.50   1280.00   5125.00   3458.33   2518.67   1300.00   1733.33   4628.00   3302.00   5000.67  13333.00   5632.33   2518.75   2858.33  10104.17   3348.00
+[529]   3936.00   3691.67  39583.33   7116.25   1940.00   5184.75   1250.00  10666.67   4389.92  13625.00  20416.67  14333.33  11333.33   7375.00   3033.00   6280.00
+[545]  16133.33   6074.17   1375.00   3513.33   2866.50   3176.00   3895.00   3225.23   9367.00   1312.08   4665.83   5600.00   2658.83   2796.80   2783.33   4820.00
+[561]   4806.00   7725.00   2583.00   5340.25   2160.00    833.33   5243.75  12333.33   2571.42   1675.00   3629.58   9150.00   2958.33  10353.33   2516.67  13389.15
+[577]   5479.00   6867.92   6266.67   1650.00   8541.67   4417.00   1945.00   6932.92   2667.00   6458.33   2291.67   2633.33   3980.33   5541.67   8733.33   3459.00
+[593]   4125.00   2240.00  10408.00   6089.44   6706.41   1084.00   4246.67   2479.17   5116.67   2964.67   7158.33   5078.75  13000.00   6883.33   5373.33  17917.00
+[609]   4575.08   6550.00   6200.00   5836.67  10737.50   8166.67   5653.67   4985.00   4473.33   3850.00   3338.00   5833.00   9750.00   4073.00   5641.67   5900.00
+[625]   5577.26  19583.33   3544.67   7075.50   2464.37   3983.33   8903.25   3875.00
+> par(mfrow = c(1,2))
+> par(mfrow = c(1,2))
+> plot(newloansData$Monthly.Income , newloansData$Interest.Rate , pch = 19 ,col = "blue")
+> unique(newloansData$Amount.Requested)
+  [1] 20000 19200 35000 10000 12000  6000 33500 14675  7000  2000 10625 28000  9600 25000 14000  5200 22000 30000  6500 17400  4000  7200  8000  3000 14500 23850 16000
+ [28] 17350 20125  2400  3200 12725  5500 15650  9000  5000  5450  8800 32000 22250  7325 16450  2500 27575  1000 13500 15000  5300 24000  7500 17000  6725  4500  1600
+ [55] 18550  7450  3225 23675  4200  7925  9525 10375  4800  6400 18825  5750 20950 10800  1400 24625 34500 18000  3600 11625 12375  8400  2800  7750 17500 11500  1200
+ [82]  4375  8500  6200 20800 16350 12300  8325 15200  4750  5825  6250  3300 21000 24575 13250 11000 12500  4825  7550 29000 23000  3500 17600 16800  9950  5600 31075
+[109]  9750  9500 17475  1675  9200 19125  5075  2225 15500 25975 10350 10850  4075  5900 14750 18400  5375  8875 21250 10050  4025 16500  8250 10075  9050  2350 15250
+[136] 18225 27000  4950  5350 15475 13000 24400 28625 11875 20500 25450 10400 21850  6700  5775 14475  2100  7350  4225 14700  1800 15300 10500  6625  1500 24250  8700
+[163] 20400 16100  4600 14400  7625 18500 19000 18625  6075 14075  1700 10750  5950 18200  1900 11575  9450 15875 24500  6950  8525 23500 12800 19500 12100 12250  9175
+[190] 13100 19400 23750 16950 12825 11600  8575  6100 19600 27825  3800  7800  2200 11425 17325  5425 26500 17975 16400 16750  5525 17200 14825 17625  7150 11200 13225
+[217] 13475  7100  3250 20675 21600  9250  1875 24175  7125  4400 11750  5400 19725 19750 32400 21725 10300 33600 11050 12200  9800 15600 13600  4700 21200 24925  9100
+[244] 16250 18775  9975 30075  3825 16550  4900 24375  9550 25800 18650  7900 18800 13200 31050  8100 14550 25225 30225  7575 19800  3900 28200  7400  4325 10200  5800
+[271] 15775 15350  6600 27050  2575  6900  1750  5875  7675 16300  9425 11700 27925 15175  6775 23400  9325  3700  1625 26000  6650  4575 32350 13750 13800  3725 31500
+[298]  6525  8975  1775  7050 11325 14600 15400 20700  2700 30100 21700 14100  2650  1550 17900  7300  8450 15800 12700 10550 17825  7275 23300 11975 22350  4550 13075
+[325] 11950 29175 16475 28350 25200 33000 13450 20375 19050 22500 11100 14300 25475 31300 31000 14125  6575  1950  5650  6800  5675  2250 22400  3625 19425 10450  2075
+[352]  8600 11350  1125  5100 13025  1450 17800  4350  3750  5175 18750 15675 16075  2875 14725 32550  7425 15575 31825  9700 14575 14775 16200 11400 25875 22750 17300
+[379] 19075  8475
+> plot(newloansData$Amount.Requested , newloansData$Interest.Rate , pch = 19 ,col = "red")
+> plot(newloansData$Revolving.CREDIT.Balance , newloansData$Interest.Rate , pch = 19 ,col = "red")
+> boxplot(newloansData$Interest.Rate ~ newloansData$States , col = "blue" ,main = "var is States", varwidth= T, xlab = "States")
+Error in model.frame.default(formula = newloansData$Interest.Rate ~ newloansData$States) : 
+  invalid type (NULL) for variable 'newloansData$States'
+> boxplot(newloansData$Interest.Rate ~ newloansData$State , col = "blue" ,main = "var is States", varwidth= T, xlab = "States")
+> boxplot(newloansData$Interest.Rate ~ newloansData$Fico.Range , col = "blue" ,main = "var is FicoRange", varwidth= T, xlab = "FicoRange")
+Error in model.frame.default(formula = newloansData$Interest.Rate ~ newloansData$Fico.Range) : 
+  invalid type (NULL) for variable 'newloansData$Fico.Range'
+> boxplot(newloansData$Interest.Rate ~ newloansData$FICO.Range , col = "blue" ,main = "var is FicoRange", varwidth= T, xlab = "FicoRange")
+> ## fitting a linear model to FicoScore and InterestRate
+> ficoScoreLm <- lm(newloansDate$Interest.Rate ~ newloansDate$FICO.Score)
+Error in eval(expr, envir, enclos) : object 'newloansDate' not found
+> ficoScoreLm <- lm(newloansData$Interest.Rate ~ newloansData$FICO.Score)
+> summary(ficoScoreLm)
+
+Call:
+lm(formula = newloansData$Interest.Rate ~ newloansData$FICO.Score)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-7.9898 -2.1363 -0.4565  1.8351 10.1935 
+
+Coefficients:
+                         Estimate Std. Error t value Pr(>|t|)    
+(Intercept)             73.008107   1.194023   61.15   <2e-16 ***
+newloansData$FICO.Score -0.084675   0.001685  -50.26   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 2.946 on 2496 degrees of freedom
+Multiple R-squared:  0.503,     Adjusted R-squared:  0.5028 
+F-statistic:  2526 on 1 and 2496 DF,  p-value: < 2.2e-16
+
+>#### 5/10/2014
+
+> linearModel <- lm(newloansData$Interest.Rate ~ newloansData$Loan.Purpose + newloansData$Loan.Length+newloansData$Amount.Requested + newloansData$Amount.Funded.By.Investors +newloansData$Debt.To.Income.Ratio + newloansData$State + newloansData$Home.Ownership + newloansData$Monthly.Income + newloansData$Open.CREDIT.Lines + newloansData$Revolving.CREDIT.Balance + newloansData$Inquiries.in.the.Last.6.Months + newloansData$Employment.Length)
+> ## summary of the above model 
+> summary(linearModel)
+
+Call:
+lm(formula = newloansData$Interest.Rate ~ newloansData$Loan.Purpose + 
+    newloansData$Loan.Length + newloansData$Amount.Requested + 
+    newloansData$Amount.Funded.By.Investors + newloansData$Debt.To.Income.Ratio + 
+    newloansData$State + newloansData$Home.Ownership + newloansData$Monthly.Income + 
+    newloansData$Open.CREDIT.Lines + newloansData$Revolving.CREDIT.Balance + 
+    newloansData$Inquiries.in.the.Last.6.Months + newloansData$Employment.Length)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-10.7671  -2.6814   0.0507   2.3391  11.3307 
+
+Coefficients:
+                                              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                                  9.710e+00  1.208e+00   8.040 1.40e-15 ***
+newloansData$Loan.Purposecredit_card         1.921e+00  5.342e-01   3.595 0.000331 ***
+newloansData$Loan.Purposedebt_consolidation  1.932e+00  5.153e-01   3.749 0.000182 ***
+newloansData$Loan.Purposeeducational         8.338e-01  1.043e+00   0.800 0.424050    
+newloansData$Loan.Purposehome_improvement    4.182e-01  5.830e-01   0.717 0.473223    
+newloansData$Loan.Purposehouse               1.523e+00  9.365e-01   1.626 0.104036    
+newloansData$Loan.Purposemajor_purchase      3.994e-01  6.105e-01   0.654 0.512996    
+newloansData$Loan.Purposemedical             1.083e+00  8.281e-01   1.308 0.191091    
+newloansData$Loan.Purposemoving              2.546e+00  8.296e-01   3.069 0.002172 ** 
+newloansData$Loan.Purposeother               2.323e+00  5.611e-01   4.141 3.58e-05 ***
+newloansData$Loan.Purposerenewable_energy    1.420e-01  1.842e+00   0.077 0.938576    
+newloansData$Loan.Purposesmall_business      1.368e+00  6.298e-01   2.171 0.029991 *  
+newloansData$Loan.Purposevacation            1.553e+00  9.160e-01   1.695 0.090231 .  
+newloansData$Loan.Purposewedding             1.575e+00  7.553e-01   2.086 0.037101 *  
+newloansData$Loan.Length60 months            3.497e+00  1.928e-01  18.139  < 2e-16 ***
+newloansData$Amount.Requested                4.101e-06  3.899e-05   0.105 0.916228    
+newloansData$Amount.Funded.By.Investors      1.154e-04  3.876e-05   2.978 0.002928 ** 
+newloansData$Debt.To.Income.Ratio            6.214e-02  1.097e-02   5.664 1.66e-08 ***
+newloansData$StateAL                        -2.171e+00  1.204e+00  -1.803 0.071512 .  
+newloansData$StateAR                        -1.360e+00  1.440e+00  -0.944 0.345238    
+newloansData$StateAZ                        -2.108e+00  1.179e+00  -1.788 0.073826 .  
+newloansData$StateCA                        -2.243e+00  1.073e+00  -2.090 0.036756 *  
+newloansData$StateCO                        -2.441e+00  1.153e+00  -2.118 0.034276 *  
+newloansData$StateCT                        -1.675e+00  1.171e+00  -1.431 0.152688    
+newloansData$StateDC                        -2.535e+00  1.499e+00  -1.691 0.091008 .  
+newloansData$StateDE                        -3.987e+00  1.632e+00  -2.443 0.014652 *  
+newloansData$StateFL                        -2.099e+00  1.094e+00  -1.919 0.055143 .  
+newloansData$StateGA                        -2.342e+00  1.121e+00  -2.089 0.036776 *  
+newloansData$StateHI                         5.288e-01  1.470e+00   0.360 0.719076    
+newloansData$StateIA                        -3.962e+00  4.245e+00  -0.933 0.350733    
+newloansData$StateIL                        -2.935e+00  1.116e+00  -2.631 0.008578 ** 
+newloansData$StateIN                        -5.146e+00  2.300e+00  -2.237 0.025355 *  
+newloansData$StateKS                        -1.787e+00  1.308e+00  -1.366 0.171938    
+newloansData$StateKY                        -2.758e+00  1.290e+00  -2.138 0.032578 *  
+newloansData$StateLA                        -1.271e+00  1.298e+00  -0.979 0.327460    
+newloansData$StateMA                        -2.720e+00  1.138e+00  -2.390 0.016939 *  
+newloansData$StateMD                        -1.920e+00  1.145e+00  -1.677 0.093736 .  
+newloansData$StateMI                        -1.039e+00  1.182e+00  -0.880 0.379198    
+newloansData$StateMN                        -1.882e+00  1.204e+00  -1.563 0.118225    
+newloansData$StateMO                        -2.963e+00  1.223e+00  -2.423 0.015473 *  
+newloansData$StateMS                        -1.868e+00  4.207e+00  -0.444 0.657091    
+newloansData$StateMT                        -4.326e+00  1.705e+00  -2.538 0.011223 *  
+newloansData$StateNC                        -2.215e+00  1.148e+00  -1.930 0.053780 .  
+newloansData$StateNH                        -3.236e+00  1.398e+00  -2.316 0.020668 *  
+newloansData$StateNJ                        -2.270e+00  1.121e+00  -2.025 0.042964 *  
+newloansData$StateNM                        -1.517e+00  1.441e+00  -1.053 0.292505    
+newloansData$StateNV                        -1.843e+00  1.231e+00  -1.497 0.134616    
+newloansData$StateNY                        -2.285e+00  1.084e+00  -2.108 0.035166 *  
+newloansData$StateOH                        -2.896e+00  1.140e+00  -2.540 0.011147 *  
+newloansData$StateOK                        -2.040e+00  1.307e+00  -1.561 0.118694    
+newloansData$StateOR                        -1.947e+00  1.241e+00  -1.569 0.116760    
+newloansData$StatePA                        -2.632e+00  1.120e+00  -2.349 0.018891 *  
+newloansData$StateRI                        -2.655e+00  1.395e+00  -1.903 0.057181 .  
+newloansData$StateSC                        -1.995e+00  1.253e+00  -1.592 0.111412    
+newloansData$StateSD                        -4.092e+00  2.052e+00  -1.994 0.046252 *  
+newloansData$StateTX                        -1.664e+00  1.095e+00  -1.520 0.128557    
+newloansData$StateUT                        -9.857e-01  1.376e+00  -0.716 0.473760    
+newloansData$StateVA                        -2.220e+00  1.133e+00  -1.960 0.050169 .  
+newloansData$StateVT                        -3.045e-01  1.900e+00  -0.160 0.872686    
+newloansData$StateWA                        -2.554e+00  1.155e+00  -2.211 0.027132 *  
+newloansData$StateWI                        -1.688e+00  1.264e+00  -1.335 0.181902    
+newloansData$StateWV                        -2.099e+00  1.397e+00  -1.503 0.133037    
+newloansData$StateWY                         1.420e-01  2.050e+00   0.069 0.944787    
+newloansData$Home.OwnershipOTHER             4.211e+00  2.043e+00   2.061 0.039382 *  
+newloansData$Home.OwnershipOWN               7.427e-01  2.782e-01   2.669 0.007649 ** 
+newloansData$Home.OwnershipRENT              1.108e+00  1.675e-01   6.617 4.50e-11 ***
+newloansData$Monthly.Income                 -4.610e-05  2.180e-05  -2.115 0.034568 *  
+newloansData$Open.CREDIT.Lines              -1.209e-02  1.808e-02  -0.669 0.503698    
+newloansData$Revolving.CREDIT.Balance       -1.728e-06  4.530e-06  -0.381 0.702888    
+newloansData$Inquiries.in.the.Last.6.Months  6.544e-01  5.961e-02  10.979  < 2e-16 ***
+newloansData$Employment.Length1 year        -3.032e-01  3.493e-01  -0.868 0.385462    
+newloansData$Employment.Length10+ years      1.996e-02  2.726e-01   0.073 0.941622    
+newloansData$Employment.Length2 years       -3.551e-01  3.216e-01  -1.104 0.269528    
+newloansData$Employment.Length3 years       -4.293e-01  3.251e-01  -1.321 0.186744    
+newloansData$Employment.Length4 years        2.581e-02  3.421e-01   0.075 0.939855    
+newloansData$Employment.Length5 years        1.345e-01  3.375e-01   0.399 0.690248    
+newloansData$Employment.Length6 years        9.033e-03  3.573e-01   0.025 0.979831    
+newloansData$Employment.Length7 years        2.104e-01  3.893e-01   0.540 0.588957    
+newloansData$Employment.Length8 years       -1.581e-01  4.131e-01  -0.383 0.701955    
+newloansData$Employment.Length9 years       -4.309e-01  4.787e-01  -0.900 0.368104    
+newloansData$Employment.Lengthn/a            1.091e-01  4.641e-01   0.235 0.814095    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.498 on 2417 degrees of freedom
+Multiple R-squared:  0.3216,    Adjusted R-squared:  0.2992 
+F-statistic: 14.32 on 80 and 2417 DF,  p-value: < 2.2e-16
+
+> ## seeing the p-values and finding out the significant covaiants
+> linearModel2 <- lm(newloansData$Interest.Rate ~ newloansData$Loan.Purpose + newloansData$Loan.Length+ newloansData$Amount.Funded.By.Investors +newloansData$Debt.To.Income.Ratio + newloansData$Home.Ownership + newloansData$Monthly.Income + newloansData$Open.CREDIT.Lines + newloansData$Inquiries.in.the.Last.6.Months)
+> linearModel2 <- lm(newloansData$Interest.Rate ~ newloansData$Loan.Purpose + newloansData$Loan.Length+ newloansData$Amount.Funded.By.Investors + newloansData$Home.Ownership + newloansData$Monthly.Income + newloansData$Open.CREDIT.Lines + newloansData$Inquiries.in.the.Last.6.Months)
+> lm <- lm(newloansData$Interest.Rate ~ newloansData$Loan.Purpose)
+> plot(newloansData$Interest.Rate , newloansData$Loan.Purpose,pch = 19 , col = "blue" , main = "linear model Interest.Rate vs Purpose")
+> lines(newloansData$Interest.Rate ,lm$fitted,col ="red",lwd =3)
+> lm <- lm(newloansData$Interest.Rate ~ newloansData$Loan.Length)
+> plot(newloansData$Interest.Rate , newloansData$Loan.Length,pch = 19 , col = "blue" , main = "linear model Interest.Rate vs loan length")
+> plot(newloansData$Interest.Rate , newloansData$Amount.Funded.By.Investers,pch = 19 , col = "blue" , main = "linear model Interest.Rate vs amount funded by investers")
+> plot(newloansData$Interest.Rate , newloansData$Inquiries.in.the.Last.6.Months ,pch = 19 , col = "blue" )
+> plot(newloansData$Inquiries.in.the.Last.6.Months ,newloansData$Interest.Rate ,pch = 19 , col = "blue" )
+> plot(newloansData$Inquiries.in.the.Last.6.Months ,newloansData$FICO.Range ,pch = 19 , col = "blue" )
+
+> par(mfrow = c(1,3))
+> plot(newloansData$Inquiries.in.the.Last.6.Months ,newloa ,pch = 19 , col = "blue" )
+
+> plot(newloansData$Inquiries.in.the.Last.6.Months ,newloansData$Amount.Requested ,pch = 19 , col = "blue" )
+> par(mfrow = c(1,3))
+> plot(newloansData$Inquiries.in.the.Last.6.Months ,newloansData$Interest.Rate ,pch = 19 , col = "blue" )
+> plot(newloansData$LoanLength ,newloansData$Interest.Rate ,pch = 19 , col = "orange" )
+Error in xy.coords(x, y, xlabel, ylabel, log) : 
+  'x' and 'y' lengths differ
+> plot(newloansData$Loan.Length ,newloansData$Interest.Rate ,pch = 19 , col = "orange" )
+> plot(newloansData$FICO.Score ,newloansData$Interest.Rate ,pch = 19 , col = "orange" )
+> plot(newloansData$FICO.Score ,newloansData$Interest.Rate ,pch = 19 , col = "orange" )
+> names(newloansData)
+ [1] "Amount.Requested"               "Amount.Funded.By.Investors"     "Interest.Rate"                  "Loan.Length"                   
+ [5] "Loan.Purpose"                   "Debt.To.Income.Ratio"           "State"                          "Home.Ownership"                
+ [9] "Monthly.Income"                 "FICO.Range"                     "Open.CREDIT.Lines"              "Revolving.CREDIT.Balance"      
+[13] "Inquiries.in.the.Last.6.Months" "Employment.Length"              "FICO.Score"                    
+> plot(newloansData$Amount.Requested ,newloansData$Interest.Rate ,pch = 19 , col = "orange" )
+> plot(newloansData$FICO.Score ,newloansData$Interest.Rate ,pch = 19 , col = c(newloansData$Loan.Length) )
+> plot(newloansData$Amount.Funded.By.Investers ,newloansData$Interest.Rate ,pch = 19 )
+Error in xy.coords(x, y, xlabel, ylabel, log) : 
+  'x' and 'y' lengths differ
+> plot(newloansData$Amount.Funded.By.Investors ,newloansData$Interest.Rate ,pch = 19 )
+> plot(newloansData$Amount.Funded.By.Investors ,newloansData$Interest.Rate ,pch = 19 , col = c(newloansData$FICO.Ranges))
+> plot(newloansData$Amount.Funded.By.Investors ,newloansData$Interest.Rate ,pch = 19 , col = c(newloansData$FICO.Scores))
+> plot(newloansData$Amount.Funded.By.Investors ,newloansData$Interest.Rate ,pch = 19 , col = c(newloansData$State))
+> names(newloansData)
+ [1] "Amount.Requested"               "Amount.Funded.By.Investors"     "Interest.Rate"                  "Loan.Length"                   
+ [5] "Loan.Purpose"                   "Debt.To.Income.Ratio"           "State"                          "Home.Ownership"                
+ [9] "Monthly.Income"                 "FICO.Range"                     "Open.CREDIT.Lines"              "Revolving.CREDIT.Balance"      
+[13] "Inquiries.in.the.Last.6.Months" "Employment.Length"              "FICO.Score"                    
+> par(mfrow = c(1,3))
+> plot(newloansData$Amount.Funded.By.Investors,pch = 19 , col = "green" ,xlab = "amount funded by investors")
+> plot(newloansData$Debt.To.Income.Ratio,pch = 19 , col = "blue" ,xlab = "debt to income ratio")
+> plot(newloansData$Open.CREDIT.Lines,pch = 19 , col = "blue" ,xlab = "open credit lines")
+> par(mfrow = c(1,3))
+> plot(newloansData$Amount.Funded.By.Investors,newloansData$Interest.Rate,pch = 19 , col = "green" ,xlab = "amount funded by investors")
+> plot(newloansData$Open.CREDIT.Lines,newloansData$Interest.Rate,pch = 19 , col = "blue" ,xlab = "open credit lines")
+> plot(newloansData$Debt.To.Income.Ratio,newloansData$Interest.Rate,pch = 19 , col = "red" ,xlab = "debt to income ratio")
+
+####linear model for for Debt.To.Income.Ratio
+
+> plot(newloansData$Debt.To.Income.Ratio,newloansData$Interest.Rate,pch = 19 , col = "red" ,xlab = "debt to income ratio")
+> lm1 <- lm(newloansData$Interest.Rate ~ newloansData$Debt.To.Income.Ratio)
+> abline(lm1,col= "black")
+> abline(lm1,col= "black", lwd = 3)
+> summary(lm1)
+
+Call:
+lm(formula = newloansData$Interest.Rate ~ newloansData$Debt.To.Income.Ratio)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-8.7940 -3.0145 -0.1168  2.6048 12.3130 
+
+Coefficients:
+                                  Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                       11.59480    0.18796  61.688   <2e-16 ***
+newloansData$Debt.To.Income.Ratio  0.09591    0.01098   8.734   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 4.116 on 2496 degrees of freedom
+Multiple R-squared:  0.02965,   Adjusted R-squared:  0.02927 
+F-statistic: 76.28 on 1 and 2496 DF,  p-value: < 2.2e-16
+
+> lm2 <- lm(newloansData$Interest.Rate ~ newloansData$Open.CREDIT.Lines)
+> plot(newloansData$Open.CREDIT.Lines , newloansData$Interest.Rate , col = "black" pch = 19)
+Error: unexpected symbol in "plot(newloansData$Open.CREDIT.Lines , newloansData$Interest.Rate , col = "black" pch"
+> plot(newloansData$Open.CREDIT.Lines , newloansData$Interest.Rate , col = "black", pch = 19)
+> abline(lm2,col ="red" , lwd = 4)
+> summary(lm2)
+
+Call:
+lm(formula = newloansData$Interest.Rate ~ newloansData$Open.CREDIT.Lines)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-8.3972 -3.0329 -0.0393  2.6644 11.8260 
+
+Coefficients:
+                               Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                    12.22719    0.20390   59.97  < 2e-16 ***
+newloansData$Open.CREDIT.Lines  0.08368    0.01847    4.53 6.17e-06 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 4.162 on 2496 degrees of freedom
+Multiple R-squared:  0.008155,  Adjusted R-squared:  0.007758 
+F-statistic: 20.52 on 1 and 2496 DF,  p-value: 6.169e-06
+
+> plot(newloansData$Amount.Requested, newloansData$Interest.Rate , col = "black", pch = 19)
+> lm2 <- lm(newloansData$Interest.Rate ~ newloansData$Amount.Requested)
+> abline(lm2,col ="red" , lwd = 4)
+> summary(lm2)
+
+Call:
+lm(formula = newloansData$Interest.Rate ~ newloansData$Amount.Requested)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-10.3756  -3.0095   0.0255   2.7173  11.9079 
+
+Coefficients:
+                               Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                   1.086e+01  1.482e-01   73.28   <2e-16 ***
+newloansData$Amount.Requested 1.777e-04  1.011e-05   17.57   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.942 on 2496 degrees of freedom
+Multiple R-squared:  0.1101,    Adjusted R-squared:  0.1098 
+F-statistic: 308.8 on 1 and 2496 DF,  p-value: < 2.2e-16
+
+
+###  5/10/2014 10:36 PM
+
+> plot(newloansData$Revolving.CREDIT.Balance, newloansData$Interest.Rate,pch = 19 ,col = "blue")
+> lm1 <- lm(newloansData$Interest.Rate ~ newloansData$Revolving.CREDIT.Balance)
+> abline(lm1, lwd = 3, col = "black")
+> summary(lm1)
+
+Call:
+lm(formula = newloansData$Interest.Rate ~ newloansData$Revolving.CREDIT.Balance)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-8.1224 -3.0194  0.0205  2.7414 11.9293 
+
+Coefficients:
+                                       Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                           1.286e+01  1.086e-01 118.390  < 2e-16 ***
+newloansData$Revolving.CREDIT.Balance 1.394e-05  4.559e-06   3.059  0.00225 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 4.171 on 2496 degrees of freedom
+Multiple R-squared:  0.003734,  Adjusted R-squared:  0.003335 
+F-statistic: 9.356 on 1 and 2496 DF,  p-value: 0.002246
+
+> lm1 <- lm(newloansData$Interest.Rate ~ newloansData$Revolving.CREDIT.Balance + newloansData$Amount.Requested)
+> plot(newloansData$Revolving.CREDIT.Balance, newloansData$Interest.Rate,pch = 19 ,col = "blue")
+> abline(lm1, lwd = 3, col = "black")
+Warning message:
+In abline(lm1, lwd = 3, col = "black") :
+  only using the first two of 3 regression coefficients
+> summary(lm1)
+
+Call:
+lm(formula = newloansData$Interest.Rate ~ newloansData$Revolving.CREDIT.Balance + 
+    newloansData$Amount.Requested)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-10.6030  -2.9691   0.0516   2.6877  11.8914 
+
+Coefficients:
+                                        Estimate Std. Error t value Pr(>|t|)
+(Intercept)                            1.092e+01  1.512e-01  72.256   <2e-16
+newloansData$Revolving.CREDIT.Balance -9.048e-06  4.504e-06  -2.009   0.0447
+newloansData$Amount.Requested          1.839e-04  1.057e-05  17.400   <2e-16
+                                         
+(Intercept)                           ***
+newloansData$Revolving.CREDIT.Balance *  
+newloansData$Amount.Requested         ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.94 on 2495 degrees of freedom
+Multiple R-squared:  0.1115,    Adjusted R-squared:  0.1108 
+F-statistic: 156.6 on 2 and 2495 DF,  p-value: < 2.2e-16
+
+> lm1 <- lm(newloansData$Interest.Rate ~ newloansData$Amount.Requested + newloansData$Revolving.CREDIT.Balance))
+Error: unexpected ')' in "lm1 <- lm(newloansData$Interest.Rate ~ newloansData$Amount.Requested + newloansData$Revolving.CREDIT.Balance))"
+> lm1 <- lm(newloansData$Interest.Rate ~ newloansData$Amount.Requested + newloansData$Revolving.CREDIT.Balance)
+> summary(lm1)
+
+Call:
+lm(formula = newloansData$Interest.Rate ~ newloansData$Amount.Requested + 
+    newloansData$Revolving.CREDIT.Balance)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-10.6030  -2.9691   0.0516   2.6877  11.8914 
+
+Coefficients:
+                                        Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                            1.092e+01  1.512e-01  72.256   <2e-16 ***
+newloansData$Amount.Requested          1.839e-04  1.057e-05  17.400   <2e-16 ***
+newloansData$Revolving.CREDIT.Balance -9.048e-06  4.504e-06  -2.009   0.0447 *  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.94 on 2495 degrees of freedom
+Multiple R-squared:  0.1115,    Adjusted R-squared:  0.1108 
+F-statistic: 156.6 on 2 and 2495 DF,  p-value: < 2.2e-16
+
+> lm1 <- lm(newloansData$Interest.Rate ~ newloansData$Amount.Requested + newloansData$Revolving.CREDIT.Balance+newloansData$Loan.Length)
+> summary(lm1)
+
+Call:
+lm(formula = newloansData$Interest.Rate ~ newloansData$Amount.Requested + 
+    newloansData$Revolving.CREDIT.Balance + newloansData$Loan.Length)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-10.0572  -3.0613   0.1166   2.6308  11.7964 
+
+Coefficients:
+                                        Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                            1.107e+01  1.429e-01  77.458   <2e-16 ***
+newloansData$Amount.Requested          1.041e-04  1.096e-05   9.492   <2e-16 ***
+newloansData$Revolving.CREDIT.Balance -3.417e-06  4.262e-06  -0.802    0.423    
+newloansData$Loan.Length60 months      3.475e+00  1.978e-01  17.563   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.717 on 2494 degrees of freedom
+Multiple R-squared:  0.2093,    Adjusted R-squared:  0.2084 
+F-statistic: 220.1 on 3 and 2494 DF,  p-value: < 2.2e-16
+
+> plot(newloansData$Amount.Requeted, newloansData$Interest.Rate,pch = 19 ,col = "blue")
+Error in xy.coords(x, y, xlabel, ylabel, log) : 
+  'x' and 'y' lengths differ
+> plot(newloansData$Amount.Requested, newloansData$Interest.Rate,pch = 19 ,col = "blue")
+> abline(lm1, lwd = 3, col = "black")
+Warning message:
+In abline(lm1, lwd = 3, col = "black") :
+  only using the first two of 4 regression coefficients
+> lm1 <- lm(newloansData$Interest.Rate ~ newloansData$Amount.Requested + newloansData$Amount.Funded.By.Investors+newloansData$Loan.Length)
+> summary(lm1)
+
+Call:
+lm(formula = newloansData$Interest.Rate ~ newloansData$Amount.Requested + 
+    newloansData$Amount.Funded.By.Investors + newloansData$Loan.Length)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-9.9762 -3.0706  0.1136  2.6390 11.8054 
+
+Coefficients:
+                                          Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                              1.104e+01  1.400e-01  78.863  < 2e-16 ***
+newloansData$Amount.Requested           -1.030e-05  3.919e-05  -0.263  0.79282    
+newloansData$Amount.Funded.By.Investors  1.164e-04  3.937e-05   2.958  0.00312 ** 
+newloansData$Loan.Length60 months        3.470e+00  1.970e-01  17.611  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.711 on 2494 degrees of freedom
+Multiple R-squared:  0.2119,    Adjusted R-squared:  0.211 
+F-statistic: 223.5 on 3 and 2494 DF,  p-value: < 2.2e-16
+
+> lm1 <- lm(newloansData$Interest.Rate ~ newloansData$Loan.Length+newloansData$Amount.Requested + newloansData$Amount.Funded.By.Investors)
+> summary(lm1)
+
+Call:
+lm(formula = newloansData$Interest.Rate ~ newloansData$Loan.Length + 
+    newloansData$Amount.Requested + newloansData$Amount.Funded.By.Investors)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-9.9762 -3.0706  0.1136  2.6390 11.8054 
+
+Coefficients:
+                                          Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                              1.104e+01  1.400e-01  78.863  < 2e-16 ***
+newloansData$Loan.Length60 months        3.470e+00  1.970e-01  17.611  < 2e-16 ***
+newloansData$Amount.Requested           -1.030e-05  3.919e-05  -0.263  0.79282    
+newloansData$Amount.Funded.By.Investors  1.164e-04  3.937e-05   2.958  0.00312 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.711 on 2494 degrees of freedom
+Multiple R-squared:  0.2119,    Adjusted R-squared:  0.211 
+F-statistic: 223.5 on 3 and 2494 DF,  p-value: < 2.2e-16
+
+> lm1 <- lm(newloansData$Interest.Rate ~ newloansData$Loan.Purpose)
+> summary(lm1)
+
+Call:
+lm(formula = newloansData$Interest.Rate ~ newloansData$Loan.Purpose)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-7.8310 -3.0438 -0.0969  2.7031 11.6559 
+
+Coefficients:
+                                            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                                  11.1130     0.5812  19.120  < 2e-16 ***
+newloansData$Loan.Purposecredit_card          1.9311     0.6131   3.150  0.00165 ** 
+newloansData$Loan.Purposedebt_consolidation   2.4739     0.5922   4.177 3.05e-05 ***
+newloansData$Loan.Purposeeducational         -0.1057     1.2099  -0.087  0.93041    
+newloansData$Loan.Purposehome_improvement     0.4813     0.6700   0.718  0.47265    
+newloansData$Loan.Purposehouse                2.3350     1.0874   2.147  0.03186 *  
+newloansData$Loan.Purposemajor_purchase      -0.3152     0.7107  -0.443  0.65745    
+newloansData$Loan.Purposemedical              0.5367     0.9491   0.565  0.57183    
+newloansData$Loan.Purposemoving               2.5080     0.9593   2.614  0.00899 ** 
+newloansData$Loan.Purposeother                2.0898     0.6502   3.214  0.00132 ** 
+newloansData$Loan.Purposerenewable_energy    -1.2355     2.1355  -0.579  0.56295    
+newloansData$Loan.Purposesmall_business       1.7262     0.7294   2.367  0.01802 *  
+newloansData$Loan.Purposevacation             0.8532     1.0687   0.798  0.42475    
+newloansData$Loan.Purposewedding              1.1378     0.8780   1.296  0.19515    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 4.11 on 2484 degrees of freedom
+Multiple R-squared:  0.0374,    Adjusted R-squared:  0.03236 
+F-statistic: 7.424 on 13 and 2484 DF,  p-value: 1.608e-14
+
+> plot(newloansData$Loan.Purpose,newloansData$Interest.Rate,pch =19 ,col = "blue")
+> plot(newloansData$Loan.Purpose,newloansData$Interest.Rate,pch =19 ,col = "blue",varwidth = T)
+> plot(newloansData[5],newloansData$Interest.Rate,pch =19 ,col = "blue")
+> plot(newloansData[,newloansData[5]],newloansData$Interest.Rate,pch =19 ,col = "blue")
+Error in .subset(x, j) : invalid subscript type 'list'
+> scatterplot(newloansData$Loan.Purpose,newloansData$Interest.Rate,pch =19 ,col = "blue")
+Error: could not find function "scatterplot"
+> smoothscatter(newloansData$Loan.Purpose,newloansData$Interest.Rate,pch =19 ,col = "blue")
+Error: could not find function "smoothscatter"
+> smoothScatter(newloansData$Loan.Purpose,newloansData$Interest.Rate,pch =19 ,col = "blue")
+KernSmooth 2.23 loaded
+Copyright M. P. Wand 1997-2009
+> plot(newloansData$Loan.Purpose,newloansData$Interest.Rate,pch =19 ,col = "blue",varwidth = T)
+> plot(newloansData$Loan.Purpose,newloansData$Interest.Rate,pch =19 ,col = "blue",varwidth = T)
+> plot(newloansData$Loan.Purpose,newloansData$Interest.Rate,pch =19 ,col = "blue",varwidth = T ,main = "Interest Rate vs LoanPurpose")
+> plot(newloansData$Loan.Purpose,newloansData$Interest.Rate,pch =19 ,col = "blue",varwidth = T ,xlab =  "LoanPurpose", ylab = "interest rate")
+> lm1 <- lm(newloansData$Interest.Rate ~ newloansData$Monthly.Income)
+> summary(lm1)
+
+Call:
+lm(formula = newloansData$Interest.Rate ~ newloansData$Monthly.Income)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-7.7092 -2.9512  0.0336  2.7415 11.8426 
+
+Coefficients:
+                             Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                 1.299e+01  1.463e-01  88.807   <2e-16 ***
+newloansData$Monthly.Income 1.363e-05  2.112e-05   0.646    0.519    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 4.178 on 2496 degrees of freedom
+Multiple R-squared:  0.000167,  Adjusted R-squared:  -0.0002336 
+F-statistic: 0.4168 on 1 and 2496 DF,  p-value: 0.5186
+
+> plot(newloansData$MonthlyIncome ~ newloansData$Interest.Rate,pch =19 ,col = "blue",xlab =  "Monthly income", ylab = "interest rate")
+Error in (function (formula, data = NULL, subset = NULL, na.action = na.fail,  : 
+  invalid type (NULL) for variable 'newloansData$MonthlyIncome'
+> plot(newloansData$Monthly.Income ~ newloansData$Interest.Rate,pch =19 ,col = "blue",xlab =  "Monthly income", ylab = "interest rate")
+> abline(lm1,col = "black" ,lwd = 4)
+> plot(newloansData$Revolving.CREDIT.Lines ~ newloansData$Interest.Rate,pch =19 ,col = "blue",xlab =  "revolving credit lines", ylab = "interest rate")
+Error in (function (formula, data = NULL, subset = NULL, na.action = na.fail,  : 
+  invalid type (NULL) for variable 'newloansData$Revolving.CREDIT.Lines'
+> plot(newloansData$Revolving.CREDIT.Balance ~ newloansData$Interest.Rate,pch =19 ,col = "blue",xlab =  "revolving credit balance", ylab = "interest rate")
+> lm1 <- lm(newloansData$Interest.Rate ~ newloansData$Revolving.CREDIT.Balance)
+> summary(lm1)
+
+Call:
+lm(formula = newloansData$Interest.Rate ~ newloansData$Revolving.CREDIT.Balance)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-8.1224 -3.0194  0.0205  2.7414 11.9293 
+
+Coefficients:
+                                       Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                           1.286e+01  1.086e-01 118.390  < 2e-16 ***
+newloansData$Revolving.CREDIT.Balance 1.394e-05  4.559e-06   3.059  0.00225 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 4.171 on 2496 degrees of freedom
+Multiple R-squared:  0.003734,  Adjusted R-squared:  0.003335 
+F-statistic: 9.356 on 1 and 2496 DF,  p-value: 0.002246
+
+> abline(lm1,col = "black" , lwd = 4)
+> head(newloansData$Revolving.CREDIT.Balance)
+[1] 14272 11140 21977  9346 14469 10391
+> plot(newloansData$Revolving.CREDIT.Balance, newloansData$Interest.Rate,pch =19 ,col = "blue",xlab =  "revolving credit balance", ylab = "interest rate")
+> summary(lm1)
+
+Call:
+lm(formula = newloansData$Interest.Rate ~ newloansData$Revolving.CREDIT.Balance)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-8.1224 -3.0194  0.0205  2.7414 11.9293 
+
+Coefficients:
+                                       Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                           1.286e+01  1.086e-01 118.390  < 2e-16 ***
+newloansData$Revolving.CREDIT.Balance 1.394e-05  4.559e-06   3.059  0.00225 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 4.171 on 2496 degrees of freedom
+Multiple R-squared:  0.003734,  Adjusted R-squared:  0.003335 
+F-statistic: 9.356 on 1 and 2496 DF,  p-value: 0.002246
+
+> abline(lm1,col = "black" , lwd = 4)
+> plot(newloansData$Monthly.Income, newloansData$Interest.Rate,pch =19 ,col = "blue",xlab =  "monthly income", ylab = "interest rate")
+> lm1 <- lm(newloansData$Interest.Rate ~ newloansData$Monthly.Income)
+> summary(lm1)
+
+Call:
+lm(formula = newloansData$Interest.Rate ~ newloansData$Monthly.Income)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-7.7092 -2.9512  0.0336  2.7415 11.8426 
+
+Coefficients:
+                             Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                 1.299e+01  1.463e-01  88.807   <2e-16 ***
+newloansData$Monthly.Income 1.363e-05  2.112e-05   0.646    0.519    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 4.178 on 2496 degrees of freedom
+Multiple R-squared:  0.000167,  Adjusted R-squared:  -0.0002336 
+F-statistic: 0.4168 on 1 and 2496 DF,  p-value: 0.5186
+
+> abline(lm1,col = "black" ,lwd = 4)
+>## The P-value shows the insignificance of the Monthly.Income as an independent variable in determining the interest rate
+
+> ############################
+> lm1 <- lm(newloansData$Interest.Rate~newloansData$Amount.Funded.By.Investors)
+> abline(lm1,col = "black",lwd = 3)
+> summary(lm1)
+
+Call:
+lm(formula = newloansData$Interest.Rate ~ newloansData$Amount.Funded.By.Investors)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-10.5287  -3.0228   0.0413   2.7342  11.8805 
+
+Coefficients:
+                                         Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                             1.089e+01  1.453e-01   74.94   <2e-16 ***
+newloansData$Amount.Funded.By.Investors 1.817e-04  1.017e-05   17.87   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.935 on 2496 degrees of freedom
+Multiple R-squared:  0.1135,    Adjusted R-squared:  0.1131 
+F-statistic: 319.4 on 1 and 2496 DF,  p-value: < 2.2e-16
+
+> lm1 <- lm(newloansData$Interest.Rate~newloansData$FICO.Score+$Loan.Length)
+Error: unexpected '$' in "lm1 <- lm(newloansData$Interest.Rate~newloansData$FICO.Score+$"
+> lm1 <- lm(newloansData$Interest.Rate~newloansData$FICO.Score+newloansData$Loan.Length)
+> plot(newloansData$FICO.Score,newloansData$Interest.Rate,pch =19, col = c(newloansData$Loan.Length))
+> legend(800,25,xlab = "FICO SCORE" ,ylab = "InterestRate",col = c("red","black"),cex = c(0.5,0.5),pch = c(15,15))
+Error in legend(800, 25, xlab = "FICO SCORE", ylab = "InterestRate", col = c("red",  : 
+  unused arguments (xlab = "FICO SCORE", ylab = "InterestRate")
+> legend(800,25,col = c("red","black"),cex = c(0.5,0.5),pch = c(15,15))
+Error in as.graphicsAnnot(legend) : 
+  argument "legend" is missing, with no default
+> legend(800,25,legend = c("60months","36months"),col = c("red","black"),cex = c(0.5,0.5),pch = c(15,15))
+Warning message:
+In if (xc < 0) text.width <- -text.width :
+  the condition has length > 1 and only the first element will be used
+> summary(lm1)
+
+Call:
+lm(formula = newloansData$Interest.Rate ~ newloansData$FICO.Score + 
+    newloansData$Loan.Length)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-11.406  -1.675  -0.219   1.417   9.424 
+
+Coefficients:
+                                   Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                       72.514608   0.943139   76.89   <2e-16 ***
+newloansData$FICO.Score           -0.085331   0.001331  -64.12   <2e-16 ***
+newloansData$Loan.Length60 months  4.366550   0.112509   38.81   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 2.327 on 2495 degrees of freedom
+Multiple R-squared:  0.6901,    Adjusted R-squared:  0.6898 
+F-statistic:  2778 on 2 and 2495 DF,  p-value: < 2.2e-16
+
+> abline(lm1,col = c(newloansData$Loan.Length),lwd = 3)
+Warning message:
+In abline(lm1, col = c(newloansData$Loan.Length), lwd = 3) :
+  only using the first two of 3 regression coefficients
+> 
+> abline(lm1,col = "black",lwd = 3)
+Warning message:
+In abline(lm1, col = "black", lwd = 3) :
+  only using the first two of 3 regression coefficients
+> lm1 <- lm(newloansData$Interest.Rate~newloansData$FICO.Score+newloansData$Loan.Length[1])
+Error in model.frame.default(formula = newloansData$Interest.Rate ~ newloansData$FICO.Score +  : 
+  variable lengths differ (found for 'newloansData$Loan.Length[1]')
+> lm1 <- lm(newloansData$Interest.Rate~newloansData$Loan.Purpose)
+> summary(lm1)
+
+Call:
+lm(formula = newloansData$Interest.Rate ~ newloansData$Loan.Purpose)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-7.8310 -3.0438 -0.0969  2.7031 11.6559 
+
+Coefficients:
+                                            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                                  11.1130     0.5812  19.120  < 2e-16 ***
+newloansData$Loan.Purposecredit_card          1.9311     0.6131   3.150  0.00165 ** 
+newloansData$Loan.Purposedebt_consolidation   2.4739     0.5922   4.177 3.05e-05 ***
+newloansData$Loan.Purposeeducational         -0.1057     1.2099  -0.087  0.93041    
+newloansData$Loan.Purposehome_improvement     0.4813     0.6700   0.718  0.47265    
+newloansData$Loan.Purposehouse                2.3350     1.0874   2.147  0.03186 *  
+newloansData$Loan.Purposemajor_purchase      -0.3152     0.7107  -0.443  0.65745    
+newloansData$Loan.Purposemedical              0.5367     0.9491   0.565  0.57183    
+newloansData$Loan.Purposemoving               2.5080     0.9593   2.614  0.00899 ** 
+newloansData$Loan.Purposeother                2.0898     0.6502   3.214  0.00132 ** 
+newloansData$Loan.Purposerenewable_energy    -1.2355     2.1355  -0.579  0.56295    
+newloansData$Loan.Purposesmall_business       1.7262     0.7294   2.367  0.01802 *  
+newloansData$Loan.Purposevacation             0.8532     1.0687   0.798  0.42475    
+newloansData$Loan.Purposewedding              1.1378     0.8780   1.296  0.19515    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 4.11 on 2484 degrees of freedom
+Multiple R-squared:  0.0374,    Adjusted R-squared:  0.03236 
+F-statistic: 7.424 on 13 and 2484 DF,  p-value: 1.608e-14
+
+> plot(newloansData$FICO.Score,newloansData$Interest.Rate,pch =19, col = )
+Error in plot.xy(xy, type, ...) : argument is missing, with no default
+> plot(newloansData$FICO.Score,newloansData$Interest.Rate,pch =19, col ="orange" )
+> plot(newloansData$Loan.Purpose,newloansData$Interest.Rate,pch =19, col ="orange" )
+> plot(newloansData$Loan.Purpose,newloansData$Interest.Rate,pch =19, col ="orange",varwidth = T )
+> lm1 <- lm(newloansData$Interest.Rate~newloansData$Loan.Purpose)
+> abline(lm1,col = "black" , lwd = 3)
+Warning message:
+In abline(lm1, col = "black", lwd = 3) :
+  only using the first two of 14 regression coefficients
+> lm1 <- lm(newloansData$Interest.Rate~newloansData$Inquiries.in.the.Last.6.Months)
+> plot(newloansData$Inquiries.in.the.Last.6.Months,newloansData$Interest.Rate,pch =19, col ="orange" )
+> summary(lm1)
+
+Call:
+lm(formula = newloansData$Interest.Rate ~ newloansData$Inquiries.in.the.Last.6.Months)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-8.2615 -2.9409 -0.1439  2.6704 11.7661 
+
+Coefficients:
+                                            Estimate Std. Error t value
+(Intercept)                                 12.56392    0.10242  122.67
+newloansData$Inquiries.in.the.Last.6.Months  0.55879    0.06701    8.34
+                                            Pr(>|t|)    
+(Intercept)                                   <2e-16 ***
+newloansData$Inquiries.in.the.Last.6.Months   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 4.122 on 2496 degrees of freedom
+Multiple R-squared:  0.02711,   Adjusted R-squared:  0.02672 
+F-statistic: 69.55 on 1 and 2496 DF,  p-value: < 2.2e-16
+
+> abline(lm1,col = "black" , lwd = 3)
+> lm1 <- lm(newloansData$Interest.Rate~newloansData$Inquiries.in.the.Last.6.Months + newloansData$Amount.Requested)
+> summary(lm1)
+
+Call:
+lm(formula = newloansData$Interest.Rate ~ newloansData$Inquiries.in.the.Last.6.Months + 
+    newloansData$Amount.Requested)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-9.8995 -3.0758  0.0222  2.6361 12.4765 
+
+Coefficients:
+                                             Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                                 1.029e+01  1.579e-01  65.195   <2e-16 ***
+newloansData$Inquiries.in.the.Last.6.Months 5.926e-01  6.302e-02   9.404   <2e-16 ***
+newloansData$Amount.Requested               1.805e-04  9.944e-06  18.149   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.875 on 2495 degrees of freedom
+Multiple R-squared:  0.1406,    Adjusted R-squared:  0.1399 
+F-statistic:   204 on 2 and 2495 DF,  p-value: < 2.2e-16
+
+> lm1 <- lm(newloansData$Interest.Rate~newloansData$Inquiries.in.the.Last.6.Months + newloansData$Amount.Requested+newloansData$Loan.Length)
+> summary(lm1)
+
+Call:
+lm(formula = newloansData$Interest.Rate ~ newloansData$Inquiries.in.the.Last.6.Months + 
+    newloansData$Amount.Requested + newloansData$Loan.Length)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-10.6003  -3.1152   0.1432   2.5555  12.3334 
+
+Coefficients:
+                                             Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                                 1.051e+01  1.495e-01  70.330   <2e-16 ***
+newloansData$Inquiries.in.the.Last.6.Months 5.512e-01  5.950e-02   9.264   <2e-16 ***
+newloansData$Amount.Requested               1.056e-04  1.030e-05  10.248   <2e-16 ***
+newloansData$Loan.Length60 months           3.415e+00  1.941e-01  17.592   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.655 on 2494 degrees of freedom
+Multiple R-squared:  0.2354,    Adjusted R-squared:  0.2345 
+F-statistic:   256 on 3 and 2494 DF,  p-value: < 2.2e-16
+
+> summaary(newloansData$Loans.Purpose)
+Error: could not find function "summaary"
+> summary(newloansData$Loans.Purpose)
+Length  Class   Mode 
+     0   NULL   NULL 
+> ### analyzing people of which states take the maximum no of loans and their primary reasons for taking loans
+> summary(newloansData$Loan.Purpose)
+               car        credit_card debt_consolidation        educational   home_improvement              house     major_purchase            medical 
+                50                444               1307                 15                152                 20                101                 30 
+            moving              other   renewable_energy     small_business           vacation            wedding 
+                29                199                  4                 87                 21                 39 
+> summary(newloansData$State)
+ AK  AL  AR  AZ  CA  CO  CT  DC  DE  FL  GA  HI  IA  IL  IN  KS  KY  LA  MA  MD  MI  MN  MO  MS  MT  NC  NH  NJ  NM  NV  NY  OH  OK  OR  PA  RI  SC  SD  TX  UT  VA 
+ 11  38  13  46 433  61  50  11   8 169  98  12   1 101   3  21  23  22  73  68  45  38  33   1   7  64  15  94  13  32 253  71  21  30  96  15  28   4 174  16  78 
+ VT  WA  WI  WV  WY 
+  5  58  26  15   4 
+> ### seeing the significance of loan length
+> lm1 <- lm(newloansData$Interest.Rate~newloansData$Loan.Length)
+> summary(lm1)
+
+Call:
+lm(formula = newloansData$Interest.Rate ~ newloansData$Loan.Length)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-10.6175  -3.2326  -0.0126   2.5174  12.7574 
+
+Coefficients:
+                                  Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                       12.13256    0.08573  141.53   <2e-16 ***
+newloansData$Loan.Length60 months  4.27490    0.18303   23.36   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.786 on 2496 degrees of freedom
+Multiple R-squared:  0.1794,    Adjusted R-squared:  0.179 
+F-statistic: 545.5 on 1 and 2496 DF,  p-value: < 2.2e-16
+
+> linearModel <- lm( newloansData$Interest.Rate ~  newloansData$Open.CREDIT.Lines)
+> summary(linearModel)
+
+Call:
+lm(formula = newloansData$Interest.Rate ~ newloansData$Open.CREDIT.Lines)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-8.3972 -3.0329 -0.0393  2.6644 11.8260 
+
+Coefficients:
+                               Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                    12.22719    0.20390   59.97  < 2e-16 ***
+newloansData$Open.CREDIT.Lines  0.08368    0.01847    4.53 6.17e-06 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 4.162 on 2496 degrees of freedom
+Multiple R-squared:  0.008155,  Adjusted R-squared:  0.007758 
+F-statistic: 20.52 on 1 and 2496 DF,  p-value: 6.169e-06
+
+> plotnewloansData$Open.CREDIT.Lines,newloansData$Interest.Rate,pch = 19 , col = "black")
+Error: unexpected ',' in "plotnewloansData$Open.CREDIT.Lines,"
+> plot(newloansData$Open.CREDIT.Lines,newloansData$Interest.Rate,pch = 19 , col = "black")
+> abline(linearModel , col = "red",lwd = 3)
+
+### considering significant factors togther
+> lm <- lm( newloansData$Interest.Rate ~  newloansData$Amount.Requested +  newloansData$FICO.Score ++ newloansData$Inquiries.in.the.Last.6.Months+newloansData$Amount.Funded.By.Investors + newloansData$Open.CREDIT.Lines + newloansData$Loan.Length + newloansData$Revolving.CREDIT.Balance)
+> summary(lm)
+
+Call:
+lm(formula = newloansData$Interest.Rate ~ newloansData$Amount.Requested + 
+    newloansData$FICO.Score + +newloansData$Inquiries.in.the.Last.6.Months + 
+    newloansData$Amount.Funded.By.Investors + newloansData$Open.CREDIT.Lines + 
+    newloansData$Loan.Length + newloansData$Revolving.CREDIT.Balance)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-9.574 -1.354 -0.188  1.184  9.897 
+
+Coefficients:
+                                              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                                  7.231e+01  8.537e-01  84.703  < 2e-16 ***
+newloansData$Amount.Requested                4.618e-05  2.224e-05   2.076    0.038 *  
+newloansData$FICO.Score                     -8.708e-02  1.188e-03 -73.305  < 2e-16 ***
+newloansData$Inquiries.in.the.Last.6.Months  3.790e-01  3.417e-02  11.093  < 2e-16 ***
+newloansData$Amount.Funded.By.Investors      1.083e-04  2.215e-05   4.889 1.08e-06 ***
+newloansData$Open.CREDIT.Lines              -4.522e-02  9.694e-03  -4.664 3.26e-06 ***
+newloansData$Loan.Length60 months            3.191e+00  1.093e-01  29.198  < 2e-16 ***
+newloansData$Revolving.CREDIT.Balance       -4.414e-06  2.435e-06  -1.813    0.070 .  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 2.049 on 2490 degrees of freedom
+Multiple R-squared:  0.7601,    Adjusted R-squared:  0.7595 
+F-statistic:  1127 on 7 and 2490 DF,  p-value: < 2.2e-16
+
+### Revolving.CREDIT.Lines not significant 
+
+
+ 
+ 
+
